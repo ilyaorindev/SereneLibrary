@@ -1,12 +1,15 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
+import static controller.handleLoginInterface.*;
+import static controller.handleLoginLogic.handleLoginStart;
 import static utils.interfaceHelper.resizeIcon;
-import static controller.handleLoginInterface.handleLoginSwitch;
 
 public class LoginForm {
     public LoginFrame frame;
@@ -26,14 +29,23 @@ public class LoginForm {
     public JButton changeFormToSignUp;
     public JLabel infoLabel;
     public boolean isLogin;
+    public boolean passError;
+    public boolean loginError;
+    public boolean validError;
+    public JLabel errorLabel;
+    public JLabel validLabel;
+    private Connection connection;
+
 
     //Frame is 1000 width, 600 height, keep in mind.
-    public LoginForm() {
+    public LoginForm(Connection sqlCon) {
         frame = new LoginFrame(true);
         this.isLogin = true;
+        this.connection = sqlCon;
         setupPanels();
         setupLabels();
         setupInputs();
+        setupErrors();
         frame.setVisible(true);
     }
 
@@ -122,6 +134,10 @@ public class LoginForm {
         changeFormToSignUp.setBorder(null);
         changeFormToSignUp.setFocusPainted(false);
 
+        usernameField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        passwordField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        confirmField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+
         LoginForm toPass = this;
         changeFormToSignUp.addActionListener(new ActionListener() {
             @Override
@@ -134,11 +150,37 @@ public class LoginForm {
         signInButton.setBackground(new Color(0x648DE5));
         signInButton.setForeground(Color.white);
 
+        signInButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!validCheck(toPass)) {
+                    toPass.validError = true;
+                    toPass.loginError = false;
+                    toPass.passError = false;
+                    handleError(toPass);
+                    return;
+                }
+
+                if(passwordCheck(toPass)) {
+                    toPass.passError = false;
+                    toPass.loginError = false;
+                    toPass.validError = false;
+                    handleError(toPass);
+                    handleLoginStart(toPass);
+                } else {
+                    toPass.passError = true;
+                    toPass.loginError = false;
+                    toPass.validError = false;
+                    handleError(toPass);
+                }
+            }
+        });
+
         signInButton.setBounds(30, 380, 370, 30);
         changeFormToSignUp.setBounds(165, 420, 45, 16);
-        usernameField.setBounds(200, 200, 200, 24);
-        passwordField.setBounds(200, 250, 200, 24);
-        confirmField.setBounds(200, 300, 200, 24);
+        usernameField.setBounds(180, 200, 220, 24);
+        passwordField.setBounds(180, 250, 220, 24);
+        confirmField.setBounds(180, 300, 220, 24);
 
 
         this.signInButton = signInButton; this.usernameField = usernameField; this.passwordField = passwordField; this.confirmField = confirmField; this.changeFormToSignUp = changeFormToSignUp;
@@ -147,6 +189,27 @@ public class LoginForm {
         leftPane.add(this.usernameField);
         leftPane.add(this.passwordField);
         leftPane.add(this.confirmField);
+    }
+
+    public void setupErrors() {
+        passError = false;
+        loginError = false;
+        validError = false;
+
+        JLabel errorLabel = new JLabel();
+        errorLabel.setForeground(Color.red);
+        errorLabel.setFont(new Font("Montserrat", Font.PLAIN, 12));
+        errorLabel.setBounds(180, 320, 220, 24);
+
+        JLabel validLabel = new JLabel();
+        validLabel.setForeground(Color.red);
+        validLabel.setFont(new Font("Montserrat", Font.PLAIN, 11));
+        validLabel.setBounds(405, 115, 60, 300);
+
+        this.validLabel = validLabel;
+        this.errorLabel = errorLabel;
+        leftPane.add(this.errorLabel);
+        leftPane.add(this.validLabel);
     }
 
 
