@@ -1,28 +1,36 @@
+package view;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import static utils.interfaceHelper.resizeIcon;
+import static controller.handleLoginInterface.handleLoginSwitch;
 
 public class LoginForm {
-    LoginFrame frame;
-    JPanel leftPane;
-    JPanel rightPane;
-    JLabel signInLabel;
-    JLabel usernameLabel;
-    JLabel passwordLabel;
-    JLabel confirmLabel;
-    JButton signInButton;
-    JTextField usernameField;
-    JPasswordField passwordField;
-    JPasswordField confirmField;
-    JLabel imageHolder;
-    JLabel logoLabel;
-    JLabel changeFormLabel;
-    JButton changeFormToSignUp;
-    JLabel infoLabel;
+    public LoginFrame frame;
+    public JPanel leftPane;
+    public JPanel rightPane;
+    public JLabel signInLabel;
+    public JLabel usernameLabel;
+    public JLabel passwordLabel;
+    public JLabel confirmLabel;
+    public JButton signInButton;
+    public JTextField usernameField;
+    public JPasswordField passwordField;
+    public JPasswordField confirmField;
+    public JLabel imageHolder;
+    public JLabel logoLabel;
+    public JLabel changeFormLabel;
+    public JButton changeFormToSignUp;
+    public JLabel infoLabel;
+    public boolean isLogin;
 
     //Frame is 1000 width, 600 height, keep in mind.
     public LoginForm() {
         frame = new LoginFrame(true);
+        this.isLogin = true;
         setupPanels();
         setupLabels();
         setupInputs();
@@ -51,7 +59,7 @@ public class LoginForm {
         JLabel changeFormLabel = new JLabel();
         JLabel infoLabel = new JLabel();
 
-        ImageIcon backImage = new ImageIcon("background.png");
+        ImageIcon backImage = new ImageIcon("SereneLibrary/background.png");
         backImage = resizeIcon(backImage, 500, 400);
         JLabel imageHolder = new JLabel();
         imageHolder.setIcon(backImage);
@@ -112,6 +120,15 @@ public class LoginForm {
         changeFormToSignUp.setBackground(Color.white);
         changeFormToSignUp.setForeground(new Color(0x5F4B66));
         changeFormToSignUp.setBorder(null);
+        changeFormToSignUp.setFocusPainted(false);
+
+        LoginForm toPass = this;
+        changeFormToSignUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isLogin = handleLoginSwitch(toPass, isLogin);
+            }
+        });
 
         signInButton.setText("Sign in!");
         signInButton.setBackground(new Color(0x648DE5));
@@ -132,10 +149,5 @@ public class LoginForm {
         leftPane.add(this.confirmField);
     }
 
-    public ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
-        Image originalImage = icon.getImage();
-        Image resized = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        ImageIcon resultIcon = new ImageIcon(resized);
-        return resultIcon;
-    }
+
 }
