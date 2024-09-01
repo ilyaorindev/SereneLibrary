@@ -6,6 +6,7 @@ import java.sql.Connection;
 
 import static controller.handleLoginInterface.handleError;
 import static model.loginFormQueries.accountExists;
+import static model.loginFormQueries.insertAcc;
 
 public class handleLoginLogic {
 
@@ -33,12 +34,13 @@ public class handleLoginLogic {
         System.out.println("Sign up went through!");
         String username = form.usernameField.getText();
         accountExists(con, username);
-        if(!accountExists(con, username)) {
+        if(accountExists(con, username)) {
             form.loginError = true;
             handleError(form);
             return;
         }
+        String password = form.passwordField.getText();
 
-
+        insertAcc(con, username, password);
     }
 }

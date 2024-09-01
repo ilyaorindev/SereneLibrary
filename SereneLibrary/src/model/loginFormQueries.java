@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static utils.passwordHashing.hashPassword;
+
 
 public class loginFormQueries {
 
@@ -22,5 +24,19 @@ public class loginFormQueries {
             System.out.println("SQL Exception: " + e.getMessage());
         }
         return false;
+    }
+
+    public static void insertAcc(Connection con, String user, String pass) {
+        String hashPass = hashPassword(pass);
+        String query = "INSERT INTO lib_account (lusername, lpassword) VALUES(?, ?)";
+
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setString(1, user);
+            statement.setString(2, hashPass);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.getMessage());
+        }
+
     }
 }
