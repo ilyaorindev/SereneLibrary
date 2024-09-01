@@ -1,4 +1,6 @@
 package model;
+import view.LoginForm;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,16 +29,7 @@ public class database {
             System.out.println("SQL Exception: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println("Class Not Found Exception: " + e.getMessage());
-        } finally {
-            // Close the connection if it was successful
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    System.out.println("SQL Exception on closing: " + e.getMessage());
-                }
-            }
-            return null;
         }
+        return connection;
     }
 }

@@ -166,7 +166,7 @@ public class LoginForm {
                     toPass.loginError = false;
                     toPass.validError = false;
                     handleError(toPass);
-                    handleLoginStart(toPass);
+                    handleLoginStart(toPass, toPass.connection);
                 } else {
                     toPass.passError = true;
                     toPass.loginError = false;
