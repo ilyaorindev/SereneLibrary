@@ -20,6 +20,6 @@ public class handleLoginInterface {
             form.signInButton.setText("Sign up!");
             form.logoLabel.setText("SereneLibrary - Join now!");
         }
-        return !isLogin;
+        return isLogin;
     }
 }

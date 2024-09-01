@@ -126,7 +126,7 @@ public class LoginForm {
         changeFormToSignUp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                isLogin = handleLoginSwitch(toPass, isLogin);
+                isLogin = handleLoginSwitch(toPass, !isLogin);
             }
         });
 
