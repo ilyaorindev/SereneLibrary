@@ -5,14 +5,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static utils.passwordHashing.hashPassword;
+import static utils.passwordHashing.passwordsMatch;
 
 
 public class loginFormQueries {
 
     public static boolean accountExists(Connection con, String username) {
-        String query = "SELECT lusername FROM lib_account WHERE lusername='" + username + "'";
+        String query = "SELECT lusername FROM lib_account WHERE lusername = ?";
 
         try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String usernamez = resultSet.getString("lusername");
@@ -38,5 +40,22 @@ public class loginFormQueries {
             System.out.println("SQL Exception: " + e.getMessage());
         }
 
+    }
+
+    public static boolean signInOrNot(Connection con, String username, String password) {
+        String query = "SELECT lpassword FROM lib_account WHERE lusername = ?";
+
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String hashedPass = resultSet.getString("lpassword");
+                return passwordsMatch(password, hashedPass);
+            }
+            return false;
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.getMessage());
+        }
+        return false;
     }
 }

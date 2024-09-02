@@ -36,30 +36,35 @@ public class handleLoginInterface {
 
     public static void handleError(LoginForm form) {
         if(form.validError) {
+            form.errorLabel.setForeground(Color.red);
             form.usernameField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.confirmField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.passwordField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.errorLabel.setText("");
             form.validLabel.setText("<html> Inputs are invalid: Please make sure all inputs have a length of 4 to 14 characters. </html>");
         } else if(form.passError) {
+            form.errorLabel.setForeground(Color.red);
             form.usernameField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
             form.confirmField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.passwordField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.errorLabel.setText("Passwords arent matching!");
             form.validLabel.setText("");
         } else if(form.loginError && form.isLogin) {
+            form.errorLabel.setForeground(Color.red);
             form.usernameField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
             form.confirmField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.passwordField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.errorLabel.setText("Username or password is wrong!");
             form.validLabel.setText("");
         } else if(form.loginError && !form.isLogin) {
+            form.errorLabel.setForeground(Color.red);
             form.usernameField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
             form.confirmField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.passwordField.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             form.errorLabel.setText("Account already exists!");
             form.validLabel.setText("");
         } else {
+            form.errorLabel.setForeground(Color.red);
             form.usernameField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
             form.confirmField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
             form.passwordField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
@@ -98,5 +103,13 @@ public class handleLoginInterface {
             return false;
         }
         return true;
+    }
+    public static void handleSignup(LoginForm form) {
+        form.errorLabel.setForeground(Color.green);
+        form.usernameField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        form.confirmField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        form.passwordField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        form.errorLabel.setText("Successfully registered!");
+        form.validLabel.setText("");
     }
 }
